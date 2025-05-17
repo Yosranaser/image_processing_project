@@ -13,18 +13,18 @@ def add_gaussian_noise(image, mean=0, std=25):
 
 st.title("🖼️filters on images app")
 
-# رفع الصورة
+
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
 
-# اختيار الفلتر
+
 filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise"])
 
-# تطبيق الفلتر
+
 if uploaded_file is not None and filter_option != "-- اختر --":
     image = Image.open(uploaded_file)
     img_array = np.array(image)
 
-    # تحويل الصورة إلى BGR لأن OpenCV يعمل بـ BGR
+    
     img_bgr = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
 
     if filter_option == "Grayscale":
@@ -32,7 +32,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
     elif filter_option == "gaussian_noise":
         image = image.convert("RGB")
-        noisy_img = add_gaussian_noise(image, 0, 25)
+        noisy_img = add_gaussian_noise(img_bgr, 0, 25)
         st.image(noisy_img, caption="صورة بها ضوضاء Gaussian", use_column_width=True)
 
        
