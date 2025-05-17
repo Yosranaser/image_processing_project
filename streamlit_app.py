@@ -9,7 +9,7 @@ st.title("🖼️filters on images app")
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
 
 # اختيار الفلتر
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --", "Grayscale", "Blur", "Edge Detection", "Sepia","salt and pepper noise","gaussian_noise"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise"])
 
 # تطبيق الفلتر
 if uploaded_file is not None and filter_option != "-- اختر --":
