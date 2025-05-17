@@ -30,7 +30,7 @@ def add_random_noise(image,intensity):
     noisy_image = np.clip((image + noisy_image), 0, 255).astype(np.uint8)
     return noisy_image
 def image_compression(image,comp_ratio):
-    h,w = image.size
+    h, w = image.shape[:2]
     row,colm =int( h/comp_ratio),int(w/comp_ratio)
     new_size = (row,colm)
     resized_image = image.resize(new_size)
