@@ -9,7 +9,7 @@ st.title("🖼️filters on images app")
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
 
 # اختيار الفلتر
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --", "Grayscale", "Blur", "Edge Detection", "Sepia"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --", "Grayscale", "Blur", "Edge Detection", "Sepia","salt and pepper noise","gaussian_noise"])
 
 # تطبيق الفلتر
 if uploaded_file is not None and filter_option != "-- اختر --":
@@ -22,7 +22,13 @@ if uploaded_file is not None and filter_option != "-- اختر --":
     if filter_option == "Grayscale":
         filtered_img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
-
+    elif filter_option == "gaussian_noise":
+        def add_gaussian_noise(image,mean,std):
+            noise = np.random.normal(mean,std,image.shape).astype(np.uint8)
+            noisy_image = cv2.add(noise,image)
+            st.image(noisy_image, caption="صورة رمادية", use_column_width=True)
+        add_gaussian_noise(image,0,25)
+       
     elif filter_option == "Blur":
         filtered_img = cv2.GaussianBlur(img_bgr, (15, 15), 0)
         st.image(cv2.cvtColor(filtered_img, cv2.COLOR_BGR2RGB), caption="صورة ضبابية", use_column_width=True)
