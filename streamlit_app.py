@@ -2,7 +2,7 @@ import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
-
+import matplotlib.pyplot as plt
 
 
 def add_gaussian_noise(image, mean=0, std=25):
