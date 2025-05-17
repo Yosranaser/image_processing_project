@@ -29,13 +29,22 @@ def add_random_noise(image,intensity):
     noise = np.random.randint(-1*intensity, intensity +1,image.shape)
     noisy_image = np.clip((image + noisy_image), 0, 255).astype(np.uint8)
     return noisy_image
+def image_compression(image,comp_ratio):
+    h,w = image.size
+    row,colm =int( h/comp_ratio),int(w/comp_ratio)
+    new_size = (row,colm)
+    resized_image = image.resize(new_size)
+    resized_image.save("comp.jpg",optimize = False,quality = 50)
+    comp_size = os.path.getsize("comp.jpg")
+    print("comp size : ",comp_size)
+    
 st.title("🖼️filters on images app")
 
 
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
 
 
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression"])
 
 
 if uploaded_file is not None and filter_option != "-- اختر --":
@@ -61,7 +70,8 @@ if uploaded_file is not None and filter_option != "-- اختر --":
     elif filter_option == "Blur":
         filtered_img = cv2.GaussianBlur(img_bgr, (15, 15), 0)
         st.image(cv2.cvtColor(filtered_img, cv2.COLOR_BGR2RGB), caption="صورة ضبابية", use_column_width=True)
-
+    elif filter_option == "image_compression":
+        image_compression(img_bgr,2)
     elif filter_option == "Edge Detection":
         gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         filtered_img = cv2.Canny(gray, 100, 200)
