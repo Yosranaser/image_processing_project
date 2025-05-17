@@ -54,35 +54,40 @@ def apply_ideal_high_pass_filter(img, cutoff_freq=2):
     filtered_image = np.abs(np.fft.ifft2(filtered_image))
     filtered_image = np.uint8(filtered_image)
     return gray, filtered_image  
-import numpy as np
-import cv2
+
 
 def apply_Gaussian_High_pass_filter(img, cutoff_freq):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     rows, cols = gray.shape
     crow, ccol = rows // 2 , cols // 2
-
-    # Fourier transform
     f = np.fft.fft2(gray)
     fshift = np.fft.fftshift(f)
-
-    # Create Gaussian High Pass Filter
     x = np.arange(0, cols)
     y = np.arange(0, rows)
     X, Y = np.meshgrid(x, y)
     gaussian_filter = 1 - np.exp(-((X - ccol)**2 + (Y - crow)**2) / (2 * (cutoff_freq**2)))
-
-    # Apply filter
     filtered_transform = fshift * gaussian_filter
-
-    # Inverse Fourier transform
     f_ishift = np.fft.ifftshift(filtered_transform)
     img_back = np.fft.ifft2(f_ishift)
     img_back = np.abs(img_back)
     img_back = np.uint8(np.clip(img_back, 0, 255))
-
     return gray, img_back
-
+def apply_Ideal_Low_pass_filter(img,cutoff_freq):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    rows, cols = gray.shape
+    center_row, center_col = rows // 2, cols // 2
+    cutoff_freq = 2
+    mask = np.zeros((rows, cols), dtype=np.float32)
+    for i in range(rows):
+        for j in range(cols):
+                distance = np.sqrt((i - center_row)**2 + (j - center_col)**2)
+                if distance <= cutoff_freq:
+                    mask[i, j] = 1
+    ideal_LPF = forier_shift * mask   
+    filtered_image = np.fft.ifftshift(ideal_LPF)
+    filtered_image = np.abs(np.fft.ifft2(filtered_image))
+    filtered_image = np.uint8(filtered_image)
+    return gray, img_back
 
 st.title("🖼️filters on images app")
 
@@ -90,7 +95,7 @@ st.title("🖼️filters on images app")
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
 
 
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter"])
 
 
 if uploaded_file is not None and filter_option != "-- اختر --":
@@ -131,6 +136,16 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         st.pyplot(fig)
     elif filter_option == "Gaussian_High_pass_filter": 
         gray_img, filtered_img = apply_Gaussian_High_pass_filter(img_bgr,10)
+        fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+        axes[0].imshow(gray_img, cmap='gray')
+        axes[0].set_title("📷 orignial image")
+        axes[0].axis('off')
+        axes[1].imshow(filtered_img, cmap='gray')
+        axes[1].set_title("🔍 after applyingt Ideal HPF")
+        axes[1].axis('off')
+        st.pyplot(fig)
+    elif filter_option == "Ideal_Low_pass_filter": 
+        gray_img, filtered_img = apply_Ideal_Low_pass_filter(img_bgr,10)
         fig, axes = plt.subplots(1, 2, figsize=(10, 5))
         axes[0].imshow(gray_img, cmap='gray')
         axes[0].set_title("📷 orignial image")
