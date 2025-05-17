@@ -3,6 +3,14 @@ import cv2
 import numpy as np
 from PIL import Image
 
+
+def add_gaussian_noise(image, mean=0, std=25):
+    image_np = np.array(image)  # Convert PIL image to NumPy array
+    noise = np.random.normal(mean, std, image_np.shape).astype(np.uint8)
+    noisy_image = image_np + noise
+    noisy_image = np.clip(noisy_image, 0, 255)  # Ensure pixel values are valid
+    return Image.fromarray(noisy_image.astype(np.uint8))
+
 st.title("🖼️filters on images app")
 
 # رفع الصورة
@@ -23,10 +31,6 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         filtered_img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
     elif filter_option == "gaussian_noise":
-        def add_gaussian_noise(image,mean,std):
-            noise = np.random.normal(mean,std,image.shape).astype(np.uint8)
-            noisy_image = cv2.add(noise,image)
-            st.image(noisy_image, caption="صورة رمادية", use_column_width=True)
         add_gaussian_noise(image,0,25)
        
     elif filter_option == "Blur":
