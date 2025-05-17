@@ -98,7 +98,7 @@ def apply_Gaussian_Low_pass_filter(img,cutoff_freq):
     for u in range(M):
         for v in range(N):
             D = np.sqrt((u-M/2)**2 + (v-N/2)**2)
-            H[u,v] = np.exp(-D**2/(2*D0*cutoff_freq))
+            H[u,v] = np.exp(-D**2/(2*cutoff_freq*cutoff_freq))
     forier=np.fft.fft2(gray)
     forier_shift=np.fft.fftshift(forier)
     filtered_transform = forier_shift * H
