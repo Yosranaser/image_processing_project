@@ -29,14 +29,14 @@ def add_random_noise(image,intensity):
     noise = np.random.randint(-1*intensity, intensity +1,image.shape)
     noisy_image = np.clip((image + noisy_image), 0, 255).astype(np.uint8)
     return noisy_image
-def image_compression(image,comp_ratio):
-    h, w = image.shape[:2]
-    row,colm =int( h/comp_ratio),int(w/comp_ratio)
-    new_size = (row,colm)
-    resized_image = image.resize(new_size)
-    resized_image.save("comp.jpg",optimize = False,quality = 50)
-    comp_size = os.path.getsize("comp.jpg")
-    print("comp size : ",comp_size)
+
+def image_compression(image, factor):
+    h, w = image.shape[:2]  
+    new_size = (w // factor, h // factor)
+    resized_image = cv2.resize(image, new_size, interpolation=cv2.INTER_LINEAR)
+    compressed_image = cv2.resize(resized_image, (w, h), interpolation=cv2.INTER_LINEAR)
+    return compressed_image
+
     
 st.title("🖼️filters on images app")
 
