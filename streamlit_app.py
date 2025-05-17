@@ -23,13 +23,19 @@ def add_salt_and_paper_noise(image, noisy_ratio):
         else:
             noisy_image[row,colm] = [255,255,255]
     return noisy_image
+
+def add_random_noise(image,intensity):
+    noisy_image = image.copy()
+    noise = np.random.randint(-1*intensity, intensity +1,image.shape)
+    noisy_image = np.clip((image + noisy_image), 0, 255).astype(np.uint8)
+    return noisy_image
 st.title("🖼️filters on images app")
 
 
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
 
 
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise"])
 
 
 if uploaded_file is not None and filter_option != "-- اختر --":
@@ -49,7 +55,9 @@ if uploaded_file is not None and filter_option != "-- اختر --":
     elif filter_option == "salt and pepper noise":
          noisy_img = add_salt_and_paper_noise(img_bgr,0.5)
          st.image(noisy_img, caption="صورة بها ضوضاء salt and pepper", use_column_width=True)
-       
+    elif filter_option == "random_noise":   
+         filtered_img = add_random_noise(img_bgr,100)
+         st.image(cv2.cvtColor(filtered_img, cv2.COLOR_BGR2RGB), caption="صورة بضوضاء عشوائيه ", use_column_width=True)
     elif filter_option == "Blur":
         filtered_img = cv2.GaussianBlur(img_bgr, (15, 15), 0)
         st.image(cv2.cvtColor(filtered_img, cv2.COLOR_BGR2RGB), caption="صورة ضبابية", use_column_width=True)
