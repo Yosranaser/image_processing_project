@@ -103,8 +103,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         axes[1].imshow(filtered_img, cmap='gray')
         axes[1].set_title("🔍 بعد تطبيق Ideal HPF")
         axes[1].axis('off')
-
-    st.pyplot(fig)
+        st.pyplot(fig)
     elif filter_option == "Edge Detection":
         gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         filtered_img = cv2.Canny(gray, 100, 200)
