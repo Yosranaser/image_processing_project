@@ -37,14 +37,35 @@ def image_compression(image, factor):
     compressed_image = cv2.resize(resized_image, (w, h), interpolation=cv2.INTER_LINEAR)
     return compressed_image
 
-    
+def apply_ideal_high_pass_filter(img, cutoff_freq=2):
+    # تحويل الصورة إلى Grayscale
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    rows, cols = gray.shape
+    center_row, center_col = rows // 2, cols // 2
+
+    # Fourier Transform
+    forier_shift = np.fft.fftshift(np.fft.fft2(gray))
+
+    # إنشاء قناع الفلتر
+    mask = np.zeros((rows, cols), dtype=np.float32)
+    for i in range(rows):
+        for j in range(cols):
+            distance = np.sqrt((i - center_row)**2 + (j - center_col)**2)
+            if distance > cutoff_freq:
+                mask[i, j] = 1
+    ideal_HPF = forier_shift * mask
+    filtered_image = np.fft.ifftshift(ideal_HPF)
+    filtered_image = np.abs(np.fft.ifft2(filtered_image))
+    filtered_image = np.uint8(filtered_image)
+
+    return gray, filtered_image    
 st.title("🖼️filters on images app")
 
 
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
 
 
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter"])
 
 
 if uploaded_file is not None and filter_option != "-- اختر --":
@@ -73,7 +94,17 @@ if uploaded_file is not None and filter_option != "-- اختر --":
     elif filter_option == "image_compression":
         filtered_img =image_compression(img_bgr,2)
         st.image(cv2.cvtColor(filtered_img, cv2.COLOR_BGR2RGB), caption="صورة مضغوطة", use_column_width=True)
-        
+    elif filter_option == "ideal_high_pass_filter": 
+        gray_img, filtered_img = apply_ideal_high_pass_filter(image, cutoff)
+        fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+        axes[0].imshow(gray_img, cmap='gray')
+        axes[0].set_title("📷 الصورة الأصلية")
+        axes[0].axis('off')
+        axes[1].imshow(filtered_img, cmap='gray')
+        axes[1].set_title("🔍 بعد تطبيق Ideal HPF")
+        axes[1].axis('off')
+
+    st.pyplot(fig)
     elif filter_option == "Edge Detection":
         gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         filtered_img = cv2.Canny(gray, 100, 200)
