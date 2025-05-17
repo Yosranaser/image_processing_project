@@ -71,7 +71,9 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         filtered_img = cv2.GaussianBlur(img_bgr, (15, 15), 0)
         st.image(cv2.cvtColor(filtered_img, cv2.COLOR_BGR2RGB), caption="صورة ضبابية", use_column_width=True)
     elif filter_option == "image_compression":
-        image_compression(img_bgr,2)
+        filtered_img =image_compression(img_bgr,2)
+        st.image(cv2.cvtColor(filtered_img, cv2.COLOR_BGR2RGB), caption="صورة مضغوطة", use_column_width=True)
+        
     elif filter_option == "Edge Detection":
         gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         filtered_img = cv2.Canny(gray, 100, 200)
