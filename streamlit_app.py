@@ -83,6 +83,9 @@ def apply_Ideal_Low_pass_filter(img,cutoff_freq):
                 distance = np.sqrt((i - center_row)**2 + (j - center_col)**2)
                 if distance <= cutoff_freq:
                     mask[i, j] = 1
+    
+    forier=np.fft.fft2(gray)
+    forier_shift=np.fft.fftshift(forier)
     ideal_LPF = forier_shift * mask   
     filtered_image = np.fft.ifftshift(ideal_LPF)
     filtered_image = np.abs(np.fft.ifft2(filtered_image))
