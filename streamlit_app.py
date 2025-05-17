@@ -8,9 +8,19 @@ def add_gaussian_noise(image, mean=0, std=25):
     image_np = np.array(image)  # Convert PIL image to NumPy array
     noise = np.random.normal(mean, std, image_np.shape).astype(np.uint8)
     noisy_image = image_np + noise
-    noisy_image = np.clip(noisy_image, 0, 255)  # Ensure pixel values are valid
+    noisy_image = np.clip(noisy_image, 0, 255)  
     return Image.fromarray(noisy_image.astype(np.uint8))
-
+def add_salt_and_paper_noise(image, noisy_ratio):
+    noisy_image = image.copy()
+    h,w,c = noisy_image.shape
+    noisy_pixels = int( h * w* noisy_ratio)
+    for _ in range (noisy_pixels):
+        row,colm = np.random.randint(0,h), np.random.randint(0,w)
+        if np.random.rand() < 0.5:
+            noisy_image[row,colm] = [0,0,0]
+        else:
+            noisy_image[row,colm] = [255,255,255]
+    return noisy_image
 st.title("🖼️filters on images app")
 
 
@@ -34,7 +44,9 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         image = image.convert("RGB")
         noisy_img = add_gaussian_noise(img_bgr, 0, 25)
         st.image(noisy_img, caption="صورة بها ضوضاء Gaussian", use_column_width=True)
-
+     elif filter_option == "salt and pepper noise":
+         noisy_img = add_salt_and_paper_noise(img_bgr,0.5)
+         st.image(noisy_img, caption="صورة بها ضوضاء salt and pepper", use_column_width=True)
        
     elif filter_option == "Blur":
         filtered_img = cv2.GaussianBlur(img_bgr, (15, 15), 0)
