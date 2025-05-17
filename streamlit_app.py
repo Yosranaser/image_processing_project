@@ -91,14 +91,35 @@ def apply_Ideal_Low_pass_filter(img,cutoff_freq):
     filtered_image = np.abs(np.fft.ifft2(filtered_image))
     filtered_image = np.uint8(filtered_image)
     return gray, filtered_image
+def apply_Gaussian_Low_pass_filter(img,cutoff_freq):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    M,N = gray.shape
+    H = np.zeros((M,N), dtype=np.float32)
+    for u in range(M):
+        for v in range(N):
+            D = np.sqrt((u-M/2)**2 + (v-N/2)**2)
+            H[u,v] = np.exp(-D**2/(2*D0*cutoff_freq))
+    forier=np.fft.fft2(gray)
+    forier_shift=np.fft.fftshift(forier)
+    filtered_transform = forier_shift * H
+    filtered_image = np.fft.ifftshift(filtered_transform)
+    filtered_image = np.abs(np.fft.ifft2(filtered_image))
+    filtered_image= np.uint8(filtered_image)
+    return gray, filtered_image
 
+
+
+
+
+
+    
 st.title("🖼️filters on images app")
 
 
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
 
 
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter"])
 
 
 if uploaded_file is not None and filter_option != "-- اختر --":
@@ -149,6 +170,16 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         st.pyplot(fig)
     elif filter_option == "Ideal_Low_pass_filter": 
         gray_img, filtered_img = apply_Ideal_Low_pass_filter(img_bgr,10)
+        fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+        axes[0].imshow(gray_img, cmap='gray')
+        axes[0].set_title("📷 orignial image")
+        axes[0].axis('off')
+        axes[1].imshow(filtered_img, cmap='gray')
+        axes[1].set_title("🔍 after applyingt Ideal HPF")
+        axes[1].axis('off')
+        st.pyplot(fig)
+     elif filter_option == "Gaussian_Low_pass_filter": 
+        gray_img, filtered_img = apply_Gaussian_Low_pass_filter(img_bgr,10)
         fig, axes = plt.subplots(1, 2, figsize=(10, 5))
         axes[0].imshow(gray_img, cmap='gray')
         axes[0].set_title("📷 orignial image")
