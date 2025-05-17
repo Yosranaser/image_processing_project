@@ -31,7 +31,9 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         filtered_img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
     elif filter_option == "gaussian_noise":
-        add_gaussian_noise(image,0,25)
+        noisy_img = add_gaussian_noise(image, 0, 25)
+        st.image(noisy_img, caption="صورة بها ضوضاء Gaussian", use_column_width=True)
+
        
     elif filter_option == "Blur":
         filtered_img = cv2.GaussianBlur(img_bgr, (15, 15), 0)
