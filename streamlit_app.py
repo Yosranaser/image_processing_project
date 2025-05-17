@@ -97,7 +97,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         filtered_img =image_compression(img_bgr,2)
         st.image(cv2.cvtColor(filtered_img, cv2.COLOR_BGR2RGB), caption="صورة مضغوطة", use_column_width=True)
     elif filter_option == "ideal_high_pass_filter": 
-        gray_img, filtered_img = apply_ideal_high_pass_filter(img_bgr,50)
+        gray_img, filtered_img = apply_ideal_high_pass_filter(img_bgr,.01)
         fig, axes = plt.subplots(1, 2, figsize=(10, 5))
         axes[0].imshow(gray_img, cmap='gray')
         axes[0].set_title("📷 الصورة الأصلية")
