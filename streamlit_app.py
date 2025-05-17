@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 def add_gaussian_noise(image, mean=0, std=25):
-    image_np = np.array(image)  # Convert PIL image to NumPy array
+    image_np = np.array(image) 
     noise = np.random.normal(mean, std, image_np.shape).astype(np.uint8)
     noisy_image = image_np + noise
     noisy_image = np.clip(noisy_image, 0, 255)  
@@ -54,20 +54,35 @@ def apply_ideal_high_pass_filter(img, cutoff_freq=2):
     filtered_image = np.abs(np.fft.ifft2(filtered_image))
     filtered_image = np.uint8(filtered_image)
     return gray, filtered_image  
-def apply_Gaussian_High_pass_filter(img,cutoff_freq):
+import numpy as np
+import cv2
+
+def apply_Gaussian_High_pass_filter(img, cutoff_freq):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    M, N = gray.shape
-    H = np.zeros((M, N), dtype=np.float32)
-    for u in range(M):
-        for v in range(N):
-            D = np.sqrt((u - M / 2) ** 2 + (v - N / 2) ** 2)
-            H[u, v] = np.exp(-D ** 2 / (2 * cutoff_freq ** 2))
-    HPF = 1 - H
-    filtered_transform = forier_shift * HPF
-    filtered_transform_shifted = np.fft.ifftshift(filtered_transform)
-    filtered_image = np.abs(np.fft.ifft2(filtered_transform_shifted))
-    filtered_image = np.uint8(filtered_image)
-    return gray, filtered_image 
+    rows, cols = gray.shape
+    crow, ccol = rows // 2 , cols // 2
+
+    # Fourier transform
+    f = np.fft.fft2(gray)
+    fshift = np.fft.fftshift(f)
+
+    # Create Gaussian High Pass Filter
+    x = np.arange(0, cols)
+    y = np.arange(0, rows)
+    X, Y = np.meshgrid(x, y)
+    gaussian_filter = 1 - np.exp(-((X - ccol)**2 + (Y - crow)**2) / (2 * (cutoff_freq**2)))
+
+    # Apply filter
+    filtered_transform = fshift * gaussian_filter
+
+    # Inverse Fourier transform
+    f_ishift = np.fft.ifftshift(filtered_transform)
+    img_back = np.fft.ifft2(f_ishift)
+    img_back = np.abs(img_back)
+    img_back = np.uint8(np.clip(img_back, 0, 255))
+
+    return gray, img_back
+
 
 st.title("🖼️filters on images app")
 
@@ -118,10 +133,10 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         gray_img, filtered_img = apply_Gaussian_High_pass_filter(img_bgr,10)
         fig, axes = plt.subplots(1, 2, figsize=(10, 5))
         axes[0].imshow(gray_img, cmap='gray')
-        axes[0].set_title("📷 الصورة الأصلية")
+        axes[0].set_title("📷 orignial image")
         axes[0].axis('off')
         axes[1].imshow(filtered_img, cmap='gray')
-        axes[1].set_title("🔍 بعد تطبيق Ideal HPF")
+        axes[1].set_title("🔍 after applyingt Ideal HPF")
         axes[1].axis('off')
         st.pyplot(fig)
     elif filter_option == "Edge Detection":
