@@ -90,7 +90,7 @@ def apply_Ideal_Low_pass_filter(img,cutoff_freq):
     filtered_image = np.fft.ifftshift(ideal_LPF)
     filtered_image = np.abs(np.fft.ifft2(filtered_image))
     filtered_image = np.uint8(filtered_image)
-    return gray, img_back
+    return gray, filtered_image
 
 st.title("🖼️filters on images app")
 
