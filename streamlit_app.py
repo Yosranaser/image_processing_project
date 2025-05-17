@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 
 
+
 def add_gaussian_noise(image, mean=0, std=25):
     image_np = np.array(image)  # Convert PIL image to NumPy array
     noise = np.random.normal(mean, std, image_np.shape).astype(np.uint8)
@@ -45,7 +46,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         image = image.convert("RGB")
         noisy_img = add_gaussian_noise(img_bgr, 0, 25)
         st.image(noisy_img, caption="صورة بها ضوضاء Gaussian", use_column_width=True)
-     elif filter_option == "salt and pepper noise":
+    elif filter_option == "salt and pepper noise":
          noisy_img = add_salt_and_paper_noise(img_bgr,0.5)
          st.image(noisy_img, caption="صورة بها ضوضاء salt and pepper", use_column_width=True)
        
