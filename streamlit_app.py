@@ -178,7 +178,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         axes[1].set_title("🔍 after applyingt Ideal HPF")
         axes[1].axis('off')
         st.pyplot(fig)
-     elif filter_option == "Gaussian_Low_pass_filter": 
+    elif filter_option == "Gaussian_Low_pass_filter": 
         gray_img, filtered_img = apply_Gaussian_Low_pass_filter(img_bgr,10)
         fig, axes = plt.subplots(1, 2, figsize=(10, 5))
         axes[0].imshow(gray_img, cmap='gray')
