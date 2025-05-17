@@ -10,6 +10,7 @@ def add_gaussian_noise(image, mean=0, std=25):
     noisy_image = image_np + noise
     noisy_image = np.clip(noisy_image, 0, 255)  
     return Image.fromarray(noisy_image.astype(np.uint8))
+    
 def add_salt_and_paper_noise(image, noisy_ratio):
     noisy_image = image.copy()
     h,w,c = noisy_image.shape
