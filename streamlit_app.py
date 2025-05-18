@@ -123,7 +123,7 @@ def histogram_sliding (img,shift):
     
 st.title("🖼️filters on images app")
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian","DETAIL","CONTOUR","EDGE_ENHANCE","EDGE_ENHANCE_MORE","FIND_EDGES","SMOOTH","SMOOTH_MORE","SHARPEN","MaxFilter","MedianFilter","MinFilter","ModeFilter","UnsharpMask","histogram_sliding"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian","DETAIL","CONTOUR","EDGE_ENHANCE","EDGE_ENHANCE_MORE","FIND_EDGES","SMOOTH","SMOOTH_MORE","SHARPEN","MaxFilter","MedianFilter","MinFilter","ModeFilter","UnsharpMask","histogram_sliding","Stretching"])
 if uploaded_file is not None and filter_option != "-- اختر --":
     image = Image.open(uploaded_file)
     img_array = np.array(image) 
@@ -138,6 +138,10 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         img_np = np.array(image.convert("RGB"))
         result = histogram_sliding(img_np, shift)
         st.image(result, caption="Adjusted Image", use_column_width=True)
+    elif filter_option == "Stretching":
+        constant=(255-0)/(gray_pil.max()-gray_pil.min()) 
+        img_stretch=np.clip(constant*gray_pil)
+        
     elif filter_option== "DETAIL" :
         detailed = gray_pil.filter(PIL.ImageFilter.DETAIL())
         st.image(detailed, use_column_width=True)
