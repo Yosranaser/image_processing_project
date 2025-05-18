@@ -151,6 +151,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         img_np = np.array(image.convert("RGB"))
         result = histogram_sliding(img_np, shift)
         st.image(result, caption="Adjusted Image", use_column_width=True)
+    
     elif filter_option == "Stretching":
         st.write("Stretching")
         constant=(255-0)/(gray.max()-gray.min()) 
