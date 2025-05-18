@@ -126,10 +126,7 @@ uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"
 filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian","DETAIL","CONTOUR","EDGE_ENHANCE","EDGE_ENHANCE_MORE","FIND_EDGES","SMOOTH","SMOOTH_MORE","SHARPEN","MaxFilter","MedianFilter","MinFilter","ModeFilter","UnsharpMask","histogram_sliding"])
 if uploaded_file is not None and filter_option != "-- اختر --":
     image = Image.open(uploaded_file)
-    img_array = np.array(image)
-   
-
-    
+    img_array = np.array(image) 
     img_bgr = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
     gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
     gray_pil = Image.fromarray(gray)
