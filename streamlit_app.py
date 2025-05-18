@@ -137,7 +137,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         st.image(bilateralFilter_image, caption="صورة بها ضوضاء Gaussian", use_column_width=True)
     elif filter_option== "medianBlur" :
         medianBlur_image = cv2.medianBlur(img_bgr,9)
-        st.image(medianBlur_image_image, use_column_width=True)
+        st.image(medianBlur_image, use_column_width=True)
     elif filter_option== "GaussianBlur" :
         GaussianBlur_image = cv2.GaussianBlur(img_bgr,9)
         st.image(GaussianBlur_image, use_column_width=True)
