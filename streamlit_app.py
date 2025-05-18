@@ -129,8 +129,8 @@ def plot_histogram(img, title):
 def histogram_stretching(gray):
     min_val = gray.min()
     max_val = gray.max()
-    constant = 255 / (max_val - min_val)
-    stretched = np.clip((gray - min_val) * constant, 0, 255).astype(np.uint8)
+    constant =(max_val - min_val)
+    stretched = gray * constant
     return stretched
 
 
