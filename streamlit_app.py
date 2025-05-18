@@ -119,7 +119,7 @@ st.title("🖼️filters on images app")
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
 
 
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian"])
 
 
 if uploaded_file is not None and filter_option != "-- اختر --":
@@ -132,6 +132,15 @@ if uploaded_file is not None and filter_option != "-- اختر --":
     if filter_option == "Grayscale":
         filtered_img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
+    elif filter_option== "bilateralFilter"
+        bilateralFilter_image = cv2.bilateralFilter(image,19,75,75)
+        st.image(bilateralFilter_image, caption="صورة بها ضوضاء Gaussian", use_column_width=True)
+    elif filter_option== "medianBlur"
+        medianBlur_image = cv2.medianBlur(image,9)
+        st.image(medianBlur_image_image, use_column_width=True)
+    elif filter_option== "GaussianBlur"
+        GaussianBlur_image = cv2.GaussianBlur(image,9)
+        st.image(GaussianBlur_image, use_column_width=True)
     elif filter_option == "gaussian_noise":
         image = image.convert("RGB")
         noisy_img = add_gaussian_noise(img_bgr, 0, 25)
