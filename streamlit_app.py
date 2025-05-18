@@ -135,6 +135,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
     elif filter_option == "histogram_sliding":
         shift = st.slider("Shift value (-100 to 100)", -100, 100, 0)
+        img_np = np.array(image.convert("RGB"))
         result = histogram_sliding(img_np, shift)
         st.image(result, caption="Adjusted Image", use_column_width=True)
     elif filter_option== "DETAIL" :
