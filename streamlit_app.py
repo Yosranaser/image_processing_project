@@ -133,13 +133,13 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         filtered_img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
     elif filter_option== "bilateralFilter" :
-        bilateralFilter_image = cv2.bilateralFilter(image,19,75,75)
+        bilateralFilter_image = cv2.bilateralFilter(img_bgr,19,75,75)
         st.image(bilateralFilter_image, caption="صورة بها ضوضاء Gaussian", use_column_width=True)
     elif filter_option== "medianBlur" :
-        medianBlur_image = cv2.medianBlur(image,9)
+        medianBlur_image = cv2.medianBlur(img_bgr,9)
         st.image(medianBlur_image_image, use_column_width=True)
     elif filter_option== "GaussianBlur" :
-        GaussianBlur_image = cv2.GaussianBlur(image,9)
+        GaussianBlur_image = cv2.GaussianBlur(img_bgr,9)
         st.image(GaussianBlur_image, use_column_width=True)
     elif filter_option == "gaussian_noise":
         image = image.convert("RGB")
