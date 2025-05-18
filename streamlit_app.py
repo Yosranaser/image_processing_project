@@ -1,7 +1,7 @@
 import streamlit as st
 import cv2
 import numpy as np
-from PIL import Image
+from PIL import Image ,ImageFilter
 import matplotlib.pyplot as plt
 
 
@@ -124,7 +124,7 @@ st.title("🖼️filters on images app")
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
 
 
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian","DETAIL","CONTOUR","EDGE_ENHANCE","EDGE_ENHANCE_MORE","FIND_EDGES","SMOOTH","SMOOTH_MORE","SHARPEN","MaxFilter","MedianFilter","MinFilter","ModeFilter","UnsharpMask"])
 
 
 if uploaded_file is not None and filter_option != "-- اختر --":
@@ -137,6 +137,43 @@ if uploaded_file is not None and filter_option != "-- اختر --":
     if filter_option == "Grayscale":
         filtered_img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
+    elif filter_option== "DETAIL" :
+        detailed = gray.filter(PIL.ImageFilter.DETAIL())
+        st.image(detailed, use_column_width=True)
+    elif filter_option== "CONTOUR" :
+        countored = gray.filter(PIL.ImageFilter.CONTOUR())
+        st.image(countored, use_column_width=True)
+    elif filter_option== "EDGE_ENHANCE" :
+        edge_enhace = gray.filter(PIL.ImageFilter.EDGE_ENHANCE())
+        st.image(edge_enhace, use_column_width=True)
+    elif filter_option== "EDGE_ENHANCE_MORE" :
+        edge_enhace_more = gray.filter(PIL.ImageFilter.EDGE_ENHANCE_MORE())
+        st.image(edge_enhace_more, use_column_width=True) 
+    elif filter_option== "EDGE_ENHANCE_MORE" :
+        find_edge = gray.filter(PIL.ImageFilter.FIND_EDGES()))
+        st.image(edge_enhace_more, use_column_width=True)
+    elif filter_option== "SMOOTH" :
+        smooth = gray.filter(PIL.ImageFilter.SMOOTH())
+        st.image(smooth, use_column_width=True)
+    elif filter_option== "SMOOTH" :
+        smooth_more = gray.filter(PIL.ImageFilter.SMOOTH_MORE())
+        st.image(smooth_more, use_column_width=True)
+    elif filter_option== "SHARPEN" :
+        sharpen = gray.filter(PIL.ImageFilter.SHARPEN())
+        st.image(sharpen, use_column_width=True)
+    elif filter_option== "MaxFilter" :
+        maxfilter = gray.filter(PIL.ImageFilter.MaxFilter(5))
+        st.image(maxfilter, use_column_width=True)   
+    elif filter_option== "MinFilter" :
+        minfilter = gray.filter(PIL.ImageFilter.MinFilter(9))
+        st.image(minfilter, use_column_width=True)
+    elif filter_option== "ModeFilter" :
+        mode = gray.filter(PIL.ImageFilter.ModeFilter(9))
+        st.image(mode, use_column_width=True)
+     elif filter_option== "UnsharpMask" :
+        UnsharpMask = gray.filter(PIL.ImageFilter.UnsharpMask(radius=9,percent=75,threshold=5))
+        st.image(UnsharpMask, use_column_width=True)
+    
     elif filter_option== "bilateralFilter" :
         bilateralFilter_image = cv2.bilateralFilter(img_bgr,19,75,75)
         st.image(bilateralFilter_image, caption="صورة بها ضوضاء Gaussian", use_column_width=True)
