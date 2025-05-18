@@ -106,8 +106,13 @@ def apply_Gaussian_Low_pass_filter(img,cutoff_freq):
     filtered_image = np.abs(np.fft.ifft2(filtered_image))
     filtered_image= np.uint8(filtered_image)
     return gray, filtered_image
-
-
+    
+def apply_laplacian_filter(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    laplacian = cv2.Laplacian(gray, cv2.CV_64F)
+    laplacian = np.abs(laplacian)
+    laplacian = np.uint8(np.clip(laplacian, 0, 255))
+    return gray, laplacian
 
 
 
@@ -145,8 +150,14 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         boxFilter_image = cv2.boxFilter(img_bgr, -1, (3,3))
         st.image(boxFilter_image, use_column_width=True)
     elif filter_option== "laplacian" :
-        laplacian_image = np.uint8(np.clip(laplacian_image, 0, 255))
-        st.image(laplacian_image, use_column_width=True)  
+       
+        gray_img, laplacian_image = apply_laplacian_filter(img_bgr)
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image(gray_img, caption="Original Grayscale", use_column_width=True)
+        with col2:
+            st.image(laplacian_image, caption="Laplacian Filtered", use_column_width=True)
+ 
     elif filter_option == "gaussian_noise":
         image = image.convert("RGB")
         noisy_img = add_gaussian_noise(img_bgr, 0, 25)
