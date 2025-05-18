@@ -129,7 +129,7 @@ def plot_histogram(img, title):
 def histogram_stretching(gray):
     min_val = gray.min()
     max_val = gray.max()
-    constant =(max_val - min_val)
+    constant =255/(max_val - min_val)
     stretched = gray * constant
     return stretched
 
@@ -163,6 +163,15 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         st.subheader("Stretched Image")
         st.image(stretched_img, caption="After Histogram Stretching", use_column_width=True)
         plot_histogram(stretched_img, "Stretched Histogram")
+    elif filter_option== "Equalization" :
+        img_equ=cv2.equalizeHist(gray)
+        st.subheader("Original Image")
+        st.image(gray, caption="Original Grayscale Image", use_column_width=True)
+        plot_histogram(gray, "Original Histogram")
+       
+        st.subheader("equ Image")
+        st.image(img_equ, caption="After Histogram Stretching", use_column_width=True)
+        plot_histogram(img_equ, "Equalization Histogram")
     elif filter_option== "DETAIL" :
         detailed = gray_pil.filter(PIL.ImageFilter.DETAIL())
         st.image(detailed, use_column_width=True)
