@@ -148,10 +148,10 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
     elif filter_option == "nth_power":
         st.subheader("Original Image")
-        st.image(gray_image, caption="Original Image", use_column_width=True)
-        plot_histogram(gray_image, "Original Histogram")
+        st.image(gray, caption="Original Image", use_column_width=True)
+        plot_histogram(gray, "Original Histogram")
         gamma = st.slider("Select Gamma Value", min_value=0.1, max_value=5.0, step=0.1, value=1.0)
-        gamma_corrected = 255 * ((gray_image / 255) ** gamma)
+        gamma_corrected = 255 * ((gray / 255) ** gamma)
         gamma_img= np.array(gamma_corrected, dtype=np.uint8)
         
         st.subheader("Gamma Corrected Image")
