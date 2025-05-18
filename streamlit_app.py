@@ -128,6 +128,7 @@ filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Graysc
 if uploaded_file is not None and filter_option != "-- اختر --":
     image = Image.open(uploaded_file)
     img_array = np.array(image)
+    gray_pil = Image.fromarray(gray)
 
     
     img_bgr = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
@@ -136,40 +137,40 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         filtered_img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
     elif filter_option== "DETAIL" :
-        detailed = gray.filter(PIL.ImageFilter.DETAIL())
+        detailed = gray_pil.filter(PIL.ImageFilter.DETAIL())
         st.image(detailed, use_column_width=True)
     elif filter_option== "CONTOUR" :
-        countored = gray.filter(PIL.ImageFilter.CONTOUR())
+        countored = gray_pil.filter(PIL.ImageFilter.CONTOUR())
         st.image(countored, use_column_width=True)
     elif filter_option== "EDGE_ENHANCE" :
-        edge_enhace = gray.filter(PIL.ImageFilter.EDGE_ENHANCE())
+        edge_enhace = gray_pil.filter(PIL.ImageFilter.EDGE_ENHANCE())
         st.image(edge_enhace, use_column_width=True)
     elif filter_option== "EDGE_ENHANCE_MORE" :
-        edge_enhace_more = gray.filter(PIL.ImageFilter.EDGE_ENHANCE_MORE())
+        edge_enhace_more = gray_pil.filter(PIL.ImageFilter.EDGE_ENHANCE_MORE())
         st.image(edge_enhace_more, use_column_width=True) 
     elif filter_option== "EDGE_ENHANCE_MORE" :
-        find_edge = gray.filter(PIL.ImageFilter.FIND_EDGES())
+        find_edge = gray_pil.filter(PIL.ImageFilter.FIND_EDGES())
         st.image(edge_enhace_more, use_column_width=True)
     elif filter_option== "SMOOTH" :
-        smooth = gray.filter(PIL.ImageFilter.SMOOTH())
+        smooth = gray_pil.filter(PIL.ImageFilter.SMOOTH())
         st.image(smooth, use_column_width=True)
     elif filter_option== "SMOOTH" :
-        smooth_more = gray.filter(PIL.ImageFilter.SMOOTH_MORE())
+        smooth_more = gray_pil.filter(PIL.ImageFilter.SMOOTH_MORE())
         st.image(smooth_more, use_column_width=True)
     elif filter_option== "SHARPEN" :
-        sharpen = gray.filter(PIL.ImageFilter.SHARPEN())
+        sharpen = gray_pil.filter(PIL.ImageFilter.SHARPEN())
         st.image(sharpen, use_column_width=True)
     elif filter_option== "MaxFilter" :
-        maxfilter = gray.filter(PIL.ImageFilter.MaxFilter(5))
+        maxfilter = gray_pil.filter(PIL.ImageFilter.MaxFilter(5))
         st.image(maxfilter, use_column_width=True)   
     elif filter_option== "MinFilter" :
-        minfilter = gray.filter(PIL.ImageFilter.MinFilter(9))
+        minfilter = gray_pil.filter(PIL.ImageFilter.MinFilter(9))
         st.image(minfilter, use_column_width=True)
     elif filter_option== "ModeFilter" :
-        mode = gray.filter(PIL.ImageFilter.ModeFilter(9))
+        mode = gray_pil.filter(PIL.ImageFilter.ModeFilter(9))
         st.image(mode, use_column_width=True)
     elif filter_option== "UnsharpMask" :
-        UnsharpMask = gray.filter(PIL.ImageFilter.UnsharpMask(radius=9,percent=75,threshold=5))
+        UnsharpMask = gray_pil.filter(PIL.ImageFilter.UnsharpMask(radius=9,percent=75,threshold=5))
         st.image(UnsharpMask, use_column_width=True)
     
     elif filter_option== "bilateralFilter" :
