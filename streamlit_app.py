@@ -111,14 +111,19 @@ def apply_laplacian_filter(img):
     laplacian = np.abs(laplacian)
     laplacian = np.uint8(np.clip(laplacian, 0, 255))
     return gray, laplacian
-
+def histogram_sliding (img,shift): 
+ fill=np.ones(img.shape,np.uint8)*abs(shift) 
+ if (shift>0): 
+     return cv2.add(img,fill) 
+ else: 
+     return cv2.subtract(img,fill)
 
 
 
     
 st.title("🖼️filters on images app")
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian","DETAIL","CONTOUR","EDGE_ENHANCE","EDGE_ENHANCE_MORE","FIND_EDGES","SMOOTH","SMOOTH_MORE","SHARPEN","MaxFilter","MedianFilter","MinFilter","ModeFilter","UnsharpMask"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian","DETAIL","CONTOUR","EDGE_ENHANCE","EDGE_ENHANCE_MORE","FIND_EDGES","SMOOTH","SMOOTH_MORE","SHARPEN","MaxFilter","MedianFilter","MinFilter","ModeFilter","UnsharpMask","histogram_sliding"])
 if uploaded_file is not None and filter_option != "-- اختر --":
     image = Image.open(uploaded_file)
     img_array = np.array(image)
@@ -131,6 +136,10 @@ if uploaded_file is not None and filter_option != "-- اختر --":
     if filter_option == "Grayscale":
         filtered_img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
+    elif filter_option == "histogram_sliding":
+        shift = st.slider("Shift value (-100 to 100)", -100, 100, 0)
+        result = histogram_sliding(img_np, shift)
+        st.image(result, caption="Adjusted Image", use_column_width=True)
     elif filter_option== "DETAIL" :
         detailed = gray_pil.filter(PIL.ImageFilter.DETAIL())
         st.image(detailed, use_column_width=True)
@@ -163,7 +172,6 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         st.image(minfilter, use_column_width=True)
     elif filter_option== "ModeFilter" :
         mode = gray_pil.filter(ImageFilter.ModeFilter(9))
-        
         st.image(mode, use_column_width=True)
     elif filter_option== "UnsharpMask" :
         UnsharpMask = gray_pil.filter(PIL.ImageFilter.UnsharpMask(radius=9,percent=75,threshold=5))
