@@ -136,7 +136,7 @@ def histogram_stretching(gray):
     
 st.title("🖼️filters on images app")
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian","DETAIL","CONTOUR","EDGE_ENHANCE","EDGE_ENHANCE_MORE","FIND_EDGES","SMOOTH","SMOOTH_MORE","SHARPEN","MaxFilter","MedianFilter","MinFilter","ModeFilter","UnsharpMask","histogram_sliding","Stretching","Equalization"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian","DETAIL","CONTOUR","EDGE_ENHANCE","EDGE_ENHANCE_MORE","FIND_EDGES","SMOOTH","SMOOTH_MORE","SHARPEN","MaxFilter","MedianFilter","MinFilter","ModeFilter","UnsharpMask","histogram_sliding","Stretching","Equalization","nth_power"])
 if uploaded_file is not None and filter_option != "-- اختر --":
     image = Image.open(uploaded_file)
     img_array = np.array(image) 
@@ -146,6 +146,17 @@ if uploaded_file is not None and filter_option != "-- اختر --":
     if filter_option == "Grayscale":
         filtered_img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
+    elif filter_option == "nth_power"
+        st.subheader("Original Image")
+        st.image(gray_image, caption="Original Image", use_column_width=True)
+        plot_histogram(gray_image, "Original Histogram")
+        gamma = st.slider("Select Gamma Value", min_value=0.1, max_value=5.0, step=0.1, value=1.0)
+        gamma_corrected = 255 * ((gray_image / 255) ** gamma)
+        gamma_img= np.array(gamma_corrected, dtype=np.uint8)
+        
+        st.subheader("Gamma Corrected Image")
+        st.image(gamma_img, caption=f"Gamma Corrected (γ = {gamma})", use_column_width=True)
+        plot_histogram(gamma_img, f"Histogram After Gamma Correction (γ = {gamma})")
     elif filter_option == "histogram_sliding":
         shift = st.slider("Shift value (-100 to 100)", -100, 100, 0)
         img_np = np.array(image.convert("RGB"))
