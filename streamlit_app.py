@@ -139,8 +139,8 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         result = histogram_sliding(img_np, shift)
         st.image(result, caption="Adjusted Image", use_column_width=True)
     elif filter_option == "Stretching":
-        constant=(255-0)/(gray_pil.max()-gray_pil.min()) 
-        img_stretch=np.clip(constant*gray_pil)
+        constant=(255-0)/(gray.max()-gray.min()) 
+        img_stretch=np.clip(constant*gray)
         
     elif filter_option== "DETAIL" :
         detailed = gray_pil.filter(PIL.ImageFilter.DETAIL())
