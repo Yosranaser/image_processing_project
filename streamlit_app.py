@@ -117,7 +117,21 @@ def histogram_sliding (img,shift):
      return cv2.add(img,fill) 
  else: 
      return cv2.subtract(img,fill)
+def plot_histogram(img, title):
+    fig, ax = plt.subplots()
+    ax.hist(img.ravel(), bins=256, range=(0, 256), color='gray')
+    ax.set_title(title)
+    ax.set_xlabel("Pixel Intensity")
+    ax.set_ylabel("Frequency")
+    st.pyplot(fig)
 
+
+def histogram_stretching(gray):
+    min_val = gray.min()
+    max_val = gray.max()
+    constant = 255 / (max_val - min_val)
+    stretched = np.clip((gray - min_val) * constant, 0, 255).astype(np.uint8)
+    return stretched
 
 
     
@@ -141,7 +155,13 @@ if uploaded_file is not None and filter_option != "-- اختر --":
     elif filter_option == "Stretching":
         constant=(255-0)/(gray.max()-gray.min()) 
         img_stretch=np.clip(constant*gray)
-        
+        st.subheader("Original Image")
+        st.image(gray, caption="Original Grayscale Image", use_column_width=True)
+        plot_histogram(gray, "Original Histogram")
+        stretched_img = histogram_stretching(gray)
+        st.subheader("Stretched Image")
+        st.image(stretched_img, caption="After Histogram Stretching", use_column_width=True)
+        plot_histogram(stretched_img, "Stretched Histogram")
     elif filter_option== "DETAIL" :
         detailed = gray_pil.filter(PIL.ImageFilter.DETAIL())
         st.image(detailed, use_column_width=True)
