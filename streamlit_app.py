@@ -4,8 +4,6 @@ import numpy as np
 from PIL import Image ,ImageFilter
 import matplotlib.pyplot as plt
 
-
-
 def add_gaussian_noise(image, mean=0, std=25):
     image_np = np.array(image) 
     noise = np.random.normal(mean, std, image_np.shape).astype(np.uint8)
