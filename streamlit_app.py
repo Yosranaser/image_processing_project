@@ -131,7 +131,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
 
     
     img_bgr = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
-
+    gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
     if filter_option == "Grayscale":
         filtered_img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
         st.image(filtered_img, caption="صورة رمادية", use_column_width=True)
