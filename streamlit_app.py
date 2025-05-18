@@ -137,7 +137,7 @@ def histogram_stretching(gray):
     
 st.title("🖼️filters on images app")
 uploaded_file = st.file_uploader("ارفع صورة", type=["jpg", "jpeg", "png"])
-filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian","DETAIL","CONTOUR","EDGE_ENHANCE","EDGE_ENHANCE_MORE","FIND_EDGES","SMOOTH","SMOOTH_MORE","SHARPEN","MaxFilter","MedianFilter","MinFilter","ModeFilter","UnsharpMask","histogram_sliding","Stretching"])
+filter_option = st.selectbox("اختر الفلتر:", ["-- اختر --","Grayscale", "Blur", "Edge Detection","salt and pepper noise","gaussian_noise","random_noise","image_compression","ideal_high_pass_filter","Gaussian_High_pass_filter","Ideal_Low_pass_filter","Gaussian_Low_pass_filter","bilateralFilter","medianBlur","GaussianBlur","boxFilter","laplacian","DETAIL","CONTOUR","EDGE_ENHANCE","EDGE_ENHANCE_MORE","FIND_EDGES","SMOOTH","SMOOTH_MORE","SHARPEN","MaxFilter","MedianFilter","MinFilter","ModeFilter","UnsharpMask","histogram_sliding","Stretching","Equalization"])
 if uploaded_file is not None and filter_option != "-- اختر --":
     image = Image.open(uploaded_file)
     img_array = np.array(image) 
