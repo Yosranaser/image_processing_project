@@ -148,7 +148,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         edge_enhace_more = gray.filter(PIL.ImageFilter.EDGE_ENHANCE_MORE())
         st.image(edge_enhace_more, use_column_width=True) 
     elif filter_option== "EDGE_ENHANCE_MORE" :
-        find_edge = gray.filter(PIL.ImageFilter.FIND_EDGES()))
+        find_edge = gray.filter(PIL.ImageFilter.FIND_EDGES())
         st.image(edge_enhace_more, use_column_width=True)
     elif filter_option== "SMOOTH" :
         smooth = gray.filter(PIL.ImageFilter.SMOOTH())
