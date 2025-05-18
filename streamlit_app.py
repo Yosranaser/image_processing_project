@@ -168,7 +168,7 @@ if uploaded_file is not None and filter_option != "-- اختر --":
     elif filter_option== "ModeFilter" :
         mode = gray.filter(PIL.ImageFilter.ModeFilter(9))
         st.image(mode, use_column_width=True)
-     elif filter_option== "UnsharpMask" :
+    elif filter_option== "UnsharpMask" :
         UnsharpMask = gray.filter(PIL.ImageFilter.UnsharpMask(radius=9,percent=75,threshold=5))
         st.image(UnsharpMask, use_column_width=True)
     
