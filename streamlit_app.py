@@ -139,8 +139,14 @@ if uploaded_file is not None and filter_option != "-- اختر --":
         medianBlur_image = cv2.medianBlur(img_bgr,9)
         st.image(medianBlur_image, use_column_width=True)
     elif filter_option== "GaussianBlur" :
-        GaussianBlur_image = cv2.GaussianBlur(img_bgr,9)
+        GaussianBlur_image = cv2.GaussianBlur(img_bgr,(9,9),21)
         st.image(GaussianBlur_image, use_column_width=True)
+    elif filter_option== "boxFilter" :
+        boxFilter_image = cv2.boxFilter(image, -1, (3,3))
+        st.image(boxFilter_image, use_column_width=True)
+    elif filter_option== "laplacian" :
+        laplacian_image = cv2.Laplacian(image, cv2.CV_64F)
+        st.image(laplacian_image, use_column_width=True)  
     elif filter_option == "gaussian_noise":
         image = image.convert("RGB")
         noisy_img = add_gaussian_noise(img_bgr, 0, 25)
